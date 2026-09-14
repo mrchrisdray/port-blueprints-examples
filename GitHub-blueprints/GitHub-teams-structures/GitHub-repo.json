@@ -1,0 +1,24 @@
+{
+  "identifier": "githubRepository",
+  "title": "GitHub Repository",
+  "icon": "Microservice",
+  "schema": {
+    "properties": {
+      "readme": { "title": "README", "type": "string", "format": "markdown" },
+      "url": { "title": "URL", "type": "string", "format": "url" },
+      "defaultBranch": { "title": "Default branch", "type": "string" },
+      "visibility": {
+        "title": "Visibility",
+        "type": "string",
+        "enum": ["public", "private", "internal"]
+      },
+      "isArchived": { "title": "Archived", "type": "boolean" },
+      "language": { "title": "Primary language", "type": "string" }
+    },
+    "required": []
+  },
+  "mirrorProperties": {},
+  "calculationProperties": {},
+  "aggregationProperties": {},
+  "relations": {}
+}

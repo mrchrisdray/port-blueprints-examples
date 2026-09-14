@@ -1,0 +1,19 @@
+{
+  "identifier": "githubUser",
+  "title": "GitHub User",
+  "icon": "Github",
+  "schema": {
+    "properties": {
+      "email": { "title": "Email", "type": "string", "format": "email" },
+      "name": { "title": "Display name", "type": "string" },
+      "avatarUrl": { "title": "Avatar", "type": "string", "format": "url" },
+      "isSiteAdmin": { "title": "Site admin", "type": "boolean" },
+      "twoFactorEnabled": { "title": "2FA enabled", "type": "boolean" }
+    },
+    "required": []
+  },
+  "mirrorProperties": {},
+  "calculationProperties": {},
+  "aggregationProperties": {},
+  "relations": {}
+}

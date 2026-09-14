@@ -1,0 +1,86 @@
+# Mapping config for Port's GitHub (Ocean) integration.
+# Verify field names against your live payload in Port's JQ playground before
+# resyncing at scale — GraphQL field availability can vary by GitHub plan/API version.
+
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+
+resources:
+  # --- Users ---
+  - kind: user
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .login
+          title: .login
+          blueprint: '"githubUser"'
+          properties:
+            email: .email
+            name: .name
+            avatarUrl: .avatarUrl
+            isSiteAdmin: .isSiteAdmin
+            twoFactorEnabled: .twoFactorEnabled
+
+  # --- Teams (with members + parent team for hierarchy) ---
+  - kind: team
+    selector:
+      query: "true"
+      members: true
+    port:
+      entity:
+        mappings:
+          identifier: .slug
+          title: .name
+          blueprint: '"githubTeam"'
+          properties:
+            slug: .slug
+            description: .description
+            link: .url
+            privacy: .privacy
+            notificationSetting: .notificationSetting
+          relations:
+            members: '[.members.nodes[].login]'
+            parentTeam: .parentTeam.slug
+
+  # --- Repositories ---
+  - kind: repository
+    selector:
+      query: "true"
+      teams: true
+    port:
+      entity:
+        mappings:
+          identifier: .name
+          title: .name
+          blueprint: '"githubRepository"'
+          properties:
+            readme: file://README.md
+            url: .html_url
+            defaultBranch: .default_branch
+            visibility: .visibility
+            isArchived: .archived
+            language: .language
+
+  # --- Team <-> Repository access, one entity per (team, repo) pair ---
+  # itemsToParse expands the .teams array on each repository into separate
+  # entities, so each team's specific permission on THIS repo is preserved.
+  # Confirm the parent-repository context variable name (shown here as
+  # .__repository) in the JQ playground for your integration version.
+  - kind: repository
+    selector:
+      query: "true"
+      teams: true
+    port:
+      itemsToParse: .teams
+      entity:
+        mappings:
+          identifier: '.__repository.name + "-" + .item.slug'
+          title: '.__repository.name + " / " + .item.name'
+          blueprint: '"githubTeamRepositoryAccess"'
+          properties:
+            role: .item.permission
+          relations:
+            team: .item.slug
+            repository: .__repository.name

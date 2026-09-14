@@ -1,0 +1,42 @@
+{
+  "identifier": "githubTeamRepositoryAccess",
+  "title": "Team Repository Access",
+  "icon": "Lock",
+  "schema": {
+    "properties": {
+      "role": {
+        "title": "Role",
+        "type": "string",
+        "enum": ["pull", "triage", "push", "maintain", "admin"],
+        "enumColors": {
+          "pull": "blue",
+          "triage": "yellow",
+          "push": "green",
+          "maintain": "orange",
+          "admin": "red"
+        }
+      }
+    },
+    "required": ["role"]
+  },
+  "mirrorProperties": {
+    "teamSlug": { "title": "Team", "path": "team.slug" },
+    "repositoryUrl": { "title": "Repository URL", "path": "repository.url" }
+  },
+  "calculationProperties": {},
+  "aggregationProperties": {},
+  "relations": {
+    "team": {
+      "title": "Team",
+      "target": "githubTeam",
+      "required": true,
+      "many": false
+    },
+    "repository": {
+      "title": "Repository",
+      "target": "githubRepository",
+      "required": true,
+      "many": false
+    }
+  }
+}

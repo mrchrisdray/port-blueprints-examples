@@ -1,0 +1,41 @@
+{
+  "identifier": "githubTeam",
+  "title": "GitHub Team",
+  "icon": "Github",
+  "schema": {
+    "properties": {
+      "slug": { "title": "Slug", "type": "string" },
+      "description": { "title": "Description", "type": "string" },
+      "link": { "title": "URL", "type": "string", "format": "url" },
+      "privacy": {
+        "title": "Privacy",
+        "type": "string",
+        "enum": ["secret", "closed"]
+      },
+      "notificationSetting": { "title": "Notification setting", "type": "string" }
+    },
+    "required": []
+  },
+  "mirrorProperties": {
+    "parentTeamSlug": {
+      "title": "Parent team",
+      "path": "parentTeam.slug"
+    }
+  },
+  "calculationProperties": {},
+  "aggregationProperties": {},
+  "relations": {
+    "members": {
+      "title": "Members",
+      "target": "githubUser",
+      "required": false,
+      "many": true
+    },
+    "parentTeam": {
+      "title": "Parent team",
+      "target": "githubTeam",
+      "required": false,
+      "many": false
+    }
+  }
+}
